@@ -1,0 +1,31 @@
+<mat-form-field appearance="fill" class="w-full">
+  @if(isLoading) {
+  <mat-spinner class="inline-flex mr-4" matSuffix diameter="16"></mat-spinner>
+  }
+
+  <input
+    [placeholder]="placeholder"
+    matInput
+    [formControl]="myControl"
+    [matAutocomplete]="auto"
+  />
+
+  @if(myControl.value) {
+  <mat-icon matSuffix (click)="clearValue()"> clear </mat-icon>
+  }
+
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    (optionSelected)="onOptionSelected($event)"
+  >
+    @for(option of filteredOptions | async; track option ) {
+    <mat-option [value]="option[valueField]">
+      {{ option[displayField] }}
+    </mat-option>
+    }
+  </mat-autocomplete>
+
+  @if(myControl.hasError('required')) {
+  <mat-error> This field is required. </mat-error>
+  }
+</mat-form-field>
